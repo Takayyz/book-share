@@ -14,7 +14,7 @@ class CreateFbInfosTable extends Migration
     public function up()
     {
         Schema::create('fb_infos', function (Blueprint $table) {
-            $table->integer('id');
+            $table->bigInteger('id');
             $table->text('fb_thumb')->nullable();
             $table->char('fb_name', 50);
         });
