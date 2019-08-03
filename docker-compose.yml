@@ -1,0 +1,40 @@
+version: '3'
+services:
+    nginx:
+        build:
+            context: ./docker/nginx
+        depends_on:
+            - php
+        ports:
+            - 3500:80
+        volumes:
+            - ./:/var/www/public
+            - ./docker/nginx/logs:/var/log/nginx/
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+    php:
+        build:
+            context: ./docker/php
+        depends_on:
+            - mysql
+        environment:
+            DB_HOST: mysql
+        ports:
+            - 3501:8000
+        volumes:
+            - ./src:/var/www/public
+
+    mysql:
+        build:
+            context: ./docker/mysql
+        volumes:
+            - ./docker/mysql/mysql_data:/var/lib/mysql
+            - ./docker/mysql/sql:/docker-entrypoint-initdb.d
+            - ./docker/mysql/logs:/var/log/mysql
+        environment:
+            - MYSQL_DATABASE=database
+            - MYSQL_USER=user
+            - MYSQL_PASSWORD=secret
+            - MYSQL_ROOT_PASSWORD=root
+        ports:
+            - 3502:3306

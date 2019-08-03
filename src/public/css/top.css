@@ -1,0 +1,133 @@
+@charset "utf-8";
+
+    /*---------------
+        common 
+    ---------------*/
+    .clearfix::after {
+        content: '';
+        clear: both;
+        display: block;
+    }
+
+    .inner{
+        margin: 0 auto;
+        width: 1100px;
+    }
+
+
+    /*---------------
+        header 
+    ---------------*/
+    .header {
+        background-color: #000;
+        box-sizing: border-box;
+        font-size: 0;
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    .header__title {
+        background-color: #fff;
+        display: inline-block;
+        float: left;
+        font-size: 110px;
+        height: 100px;
+        line-height: 105px;
+        padding: 5px;
+        text-align: center;
+        width: 450px;
+    }
+
+    .header__title__sub {
+        float: left;
+        margin-left: 10px;
+        width: 370px;
+    }
+
+    .header__title_sub--generator {
+        background-color: #fff;
+        font-size: 50px;
+        height: 55px;
+        line-height: 55px;
+        text-align: center;
+    }
+
+    .header__title__sub--misawa {
+        background-color: #696969;
+        color: #fff;
+        font-size: 30px;
+        height: 55px;
+        line-height: 55px;
+        text-align: center;
+        width: 100%;                
+    }
+
+    .header__catch {
+        border: 1px solid #fff;
+        box-sizing: border-box;
+        color: #fff;
+        display: inline-block;
+        float: left;
+        font-size: 35px;
+        height: 110px;
+        line-height: 50px;
+        margin-left: 10px;
+        text-align: center;
+        width: 250px;
+    }
+
+    /*---------------
+        main
+    ---------------*/
+    .main__contents {
+        float: left;
+        font-size: 18px;
+        padding: 40px 0;
+        width: 700px;
+    }
+
+    .main__contents--keyword li {
+        margin-bottom: 15px;
+    }
+    
+    .main__contents--keyword li:last-child {
+        margin-bottom: 0;
+    }
+
+    .main__contents--submit {
+        background-color: #696969;
+        border-radius: 25px;
+        color: #fff;
+        margin-top: 30px;
+        padding: 10px 0;
+        width: 200px;
+    }
+
+    .main__img {
+        float: right;
+        width: 400px;
+    }
+
+    /*---------------
+        footer
+    ---------------*/
+    .footer {
+        background-color: #696969;
+        padding: 20px 0;
+        width: 100%;
+    }
+
+
+    .footer__text {
+        color: #fff;
+        display: inline-block;
+        font-size: 14px;
+    }
+
+    .footer__copyright {
+        float: left;
+    }
+
+    .footer__notice {
+        float: right;
+    }
