@@ -18,3 +18,7 @@ Route::get('/', function () {
     Route::get('/misawa', 'IndexController@show');
     Route::post('/misawa/generate','GeneratorController@execute');
 
+    //book-share
+
+    Route::resource('post','PostController');
+
