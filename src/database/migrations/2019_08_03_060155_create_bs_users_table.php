@@ -15,7 +15,7 @@ class CreateBsUsersTable extends Migration
     {
         Schema::create('bs_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('fb_id');
+            $table->bigInteger('fb_id');
             $table->timestamp('craeted_at');
             $table->softDeletes();
         });
