@@ -21,4 +21,5 @@ Route::get('/', function () {
     //book-share
 
     Route::resource('post','PostController');
+    Route::resource('like', 'LikeController');
 

@@ -3,17 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Posts;
 
-
-class PostController extends Controller
+class LikeController extends Controller
 {
-    private $posts;
-
-    public function __construct(Posts $postClass)
-    {
-        $this->posts = $postClass;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -21,10 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $postData = $this->posts->orderBy('id','desc')->get();
-        // dd($postData);
-
-        return view('post.create', compact('postData'));
+        //
     }
 
     /**
@@ -34,7 +23,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create');
+        //
     }
 
     /**
@@ -45,18 +34,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-    
-        $data = $request->all();
-    
-        $data['user_id'] = 2;
-        $data['book_id'] = 2;
-        $data['p_star'] = 3;
-        $data['created_at'] = '2019-01-01';
-    
-        $this->posts->timestamps = false;
-        $this->posts->fill($data)->save();
-
-        return redirect()->route('post.index');
+        //
     }
 
     /**
