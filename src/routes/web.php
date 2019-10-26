@@ -18,3 +18,10 @@ Route::get('/', function () {
     Route::get('/misawa', 'IndexController@show');
     Route::post('/misawa/generate','GeneratorController@execute');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('auth/login', 'Auth\SocialController@viewLogin');
+Route::get('auth/facebook', 'Auth\SocialController@redirectToFacebookProvider');
+Route::get('auth/facebook/callback', 'Auth\SocialController@handleFacebookProviderCallback');

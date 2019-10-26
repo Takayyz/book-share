@@ -1,2 +1,3 @@
-docker/mysql/
-docker/nginx/
+docker/mysql/*
+docker/nginx/logs/access.log
+docker/nginx/logs/error.log
