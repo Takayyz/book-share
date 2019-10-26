@@ -27,15 +27,15 @@ class BookController extends Controller
     }
 
     /**
-     * 1冊の本の情報をISBNコードから特定してjsonで返すAPI
+     * 1冊の本の情報をJAN/ISBNコードから特定してjsonで返すAPI
      * 楽天BOOKSAPIを利用。詳細はgetBookDetails()を参照
      *
-     * @param string $isbn (route parameter)
+     * @param string $janisbn (route parameter)
      * @return string (json)
      */
-    public function showDetails(string $isbn): string
+    public function showDetails(string $janisbn): string
     {
-        return $this->getBookDetails($isbn);
+        return $this->getBookDetails($janisbn);
     }
 
     /**
@@ -86,13 +86,13 @@ class BookController extends Controller
     /**
      * 楽天BOOKSAPIを叩いてISBNコードから1冊の本の詳細情報を取得するメソッド
      *
-     * @param string $isbn
+     * @param string $janisbn
      * @return string (json)
      */
-    private function getBookDetails(string $isbn): string
+    private function getBookDetails(string $janisbn): string
     {
         $applicationId = config('rakutenApi.APPLICATION_ID');
-        $url = self::RAKUTEN_API_URL.'?applicationId='.$applicationId.'&isbnjan='.$isbn;
+        $url = self::RAKUTEN_API_URL.'?applicationId='.$applicationId.'&isbnjan='.$janisbn;
 
         $response = @file_get_contents($url);
 

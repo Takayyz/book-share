@@ -19,5 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['api']], function(){
     Route::get('/books', 'Api\BookController@index');
-    Route::get('/book/{isbn}', 'Api\BookController@showDetails');
+    Route::get('/book/{janisbn}', 'Api\BookController@showDetails');
 });
