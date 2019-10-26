@@ -7,14 +7,32 @@ use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
+    const RAKUTEN_API_URL = 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404';
+
     //
     public function index(Request $request)
     {
-        $keyword = $request->input('keyword');
-        $page    = $request->input('page');
-        $hits    = $request->input('hits');
+        $keyword = $request->input('keyword') ?? '';
+        $page    = $request->input('page') ?? 1;
+        $hits    = $request->input('hits') ?? 1;
 
-        $url = 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404?applicationId=1019399324990976605&keyword='.$keyword.'&hits='.$hits.'&page='.$page;
+        if (!empty($keyword)) {
+            return response()->json([
+                'status' => '200',
+                'books'  => $books,
+            ]);
+        } else {
+            return response()->json([
+                'status' => '400',
+                'books'  => [],
+            ]);
+        }
+    }
+
+    private function getBooks($keyword, $page, $hits)
+    {
+        $applicationId = config('rakutenApi.APPLICATION_ID');
+        $url = self::RAKUTEN_API_URL.'?applicationId='.$applicationId.'&keyword='.$keyword.'&hits='.$hits.'&page='.$page;
 
         $data = json_decode(file_get_contents($url));
 
@@ -28,6 +46,6 @@ class BookController extends Controller
             ];
         }, $data->Items);
 
-        return response()->json($books);
+        return $books;
     }
 }
