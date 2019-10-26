@@ -48,7 +48,11 @@ class BookController extends Controller
     private function getBooks(string $keyword, int $page, int $hits): string
     {
         $applicationId = config('rakutenApi.APPLICATION_ID');
-        $url = self::RAKUTEN_API_URL.'?applicationId='.$applicationId.'&keyword='.$keyword.'&hits='.$hits.'&page='.$page;
+        if (!empty($keyword)) {
+            $url = self::RAKUTEN_API_URL.'?applicationId='.$applicationId.'&keyword='.$keyword.'&hits='.$hits.'&page='.$page;
+        } else {
+            $url = self::RAKUTEN_API_URL.'?applicationId='.$applicationId.'&booksGenreId=000&hits='.$hits.'&page='.$page;
+        }
 
         $response = @file_get_contents($url);
 
