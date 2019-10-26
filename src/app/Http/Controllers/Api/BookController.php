@@ -20,8 +20,8 @@ class BookController extends Controller
     public function index(Request $request): string
     {
         $keyword = $request->input('keyword') ?? '';
-        $page    = $request->input('page') ?? 1;
-        $hits    = $request->input('hits') ?? 1;
+        $page    = $request->input('page') ?? '1';
+        $hits    = $request->input('hits') ?? '1';
 
         return $this->getBooks($keyword, $page, $hits);
     }
@@ -30,10 +30,10 @@ class BookController extends Controller
      * 1冊の本の情報をISBNコードから特定してjsonで返すAPI
      * 楽天BOOKSAPIを利用。詳細はgetBookDetails()を参照
      *
-     * @param int $isbn (route parameter)
+     * @param string $isbn (route parameter)
      * @return string (json)
      */
-    public function showDetails(int $isbn): string
+    public function showDetails(string $isbn): string
     {
         return $this->getBookDetails($isbn);
     }
@@ -42,11 +42,11 @@ class BookController extends Controller
      * 楽天BOOKSAPIを叩いてキーワード検索するメソッド
      *
      * @param string $keyword
-     * @param int $page
-     * @param int hits
+     * @param string $page
+     * @param string hits
      * @return string (json)
      */
-    private function getBooks(string $keyword, int $page, int $hits): string
+    private function getBooks(string $keyword, string $page, string $hits): string
     {
         $applicationId = config('rakutenApi.APPLICATION_ID');
         if (!empty($keyword)) {
@@ -59,10 +59,12 @@ class BookController extends Controller
 
         if ($response) {
             $data = json_decode($response);
+
             $books = array_map(function ($book) {
                 $item = $book->Item;
                 return [
                     'isbn_code' => $item->isbn,
+                    'jan_code'  => $item->jan,
                     'title'     => $item->title,
                     'author'    => $item->author,
                     'image_url' => $item->largeImageUrl,
@@ -84,10 +86,10 @@ class BookController extends Controller
     /**
      * 楽天BOOKSAPIを叩いてISBNコードから1冊の本の詳細情報を取得するメソッド
      *
-     * @param $isbn
+     * @param string $isbn
      * @return string (json)
      */
-    private function getBookDetails(int $isbn): string
+    private function getBookDetails(string $isbn): string
     {
         $applicationId = config('rakutenApi.APPLICATION_ID');
         $url = self::RAKUTEN_API_URL.'?applicationId='.$applicationId.'&isbnjan='.$isbn;
@@ -100,6 +102,7 @@ class BookController extends Controller
             $item = $data->Items[0]->Item;
             $book = [
                 'isbn_code' => $item->isbn,
+                'jan_code'  => $item->jan,
                 'title'     => $item->title,
                 'author'    => $item->author,
                 'image_url' => $item->largeImageUrl,
