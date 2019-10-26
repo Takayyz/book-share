@@ -11,5 +11,5 @@ class FbInfo extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'fb_thumb', 'fb_name'];
+    protected $fillable = ['id', 'user_id', 'fb_id', 'fb_avater', 'fb_name'];
 }
