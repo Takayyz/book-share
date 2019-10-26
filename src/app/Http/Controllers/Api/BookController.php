@@ -21,7 +21,7 @@ class BookController extends Controller
     {
         $keyword = $request->input('keyword') ?? '';
         $page    = $request->input('page') ?? '1';
-        $hits    = $request->input('hits') ?? '1';
+        $hits    = $request->input('hits') ?? '10';
 
         return $this->getBooks($keyword, $page, $hits);
     }
