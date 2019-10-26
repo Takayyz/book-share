@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+declare(strict_types = 1);
+
 class BookController extends Controller
 {
     const RAKUTEN_API_URL = 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404';
