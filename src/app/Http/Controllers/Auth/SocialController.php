@@ -6,15 +6,17 @@ use App\Http\Controllers\Controller;
 
 use Socialite;
 use App\FbInfo;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class SocialController extends Controller
 {
     private $fb_info;
 
-    public function __construct(FbInfo $fb_info)
+    public function __construct(FbInfo $fb_info, User $user)
     {
         $this->fb_info = $fb_info;
+        $this->user = $user;
     }
 
     /**
@@ -46,29 +48,26 @@ class SocialController extends Controller
     {
         try{
             
-            $user = Socialite::driver('facebook')->user();
-            // dd($user);
+            $fb_user = Socialite::driver('facebook')->user();
+            
+            // dd($this->user);
 
-            if($user){
+            if($fb_user){
 
-                $data = [
-                    'id' => $user->getId(),
-                    'fb_name' => $user->getName()
-                ];
+                $this->search($fb_user);
 
-                $this->register($data);
 
                 // OAuth Two Providers
-                $token = $user->token;
-                $refreshToken = $user->refreshToken; // not always provided
-                $expiresIn = $user->expiresIn;
+                $token = $fb_user->token;
+                $refreshToken = $fb_user->refreshToken; // not always provided
+                $expiresIn = $fb_user->expiresIn;
 
                 // All Providers
-                $user->getId();
-                $user->getNickname();
-                $user->getName();
-                $user->getEmail();
-                $user->getAvatar();
+                $fb_user->getId();
+                $fb_user->getNickname();
+                $fb_user->getName();
+                $fb_user->getEmail();
+                $fb_user->getAvatar();
 
                 return redirect("/");
 
@@ -77,12 +76,32 @@ class SocialController extends Controller
             return redirect("/");
         }
 
-        // $user->token;
+        // $fb_user->token;
     }
 
     public function register($data)
     {
-        $this->fb_info->timestamps = false;
+        // $this->fb_info->timestamps = false;
         $this->fb_info->fill($data)->save();
+    }
+
+    // サーチして登録までするよ。あとでリファクタするよ…
+    public function search($fb_user)
+    {
+        if(!$this->fb_info->where('fb_id', $fb_user->getId())->first()){
+            $data = [
+                'name' => $fb_user->getName(),
+            ];
+            $this->user->fill($data)->save();
+
+            $data = [
+                'user_id' => $this->user->id,
+                'fb_id' => $fb_user->getId(),
+                'fb_name' => $fb_user->getName(),
+                'fb_avater' => $fb_user->getAvatar()
+            ];
+
+            $this->register($data);
+        }
     }
 }
