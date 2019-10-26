@@ -9,8 +9,14 @@ class BookController extends Controller
 {
     const RAKUTEN_API_URL = 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404';
 
-    //
-    public function index(Request $request)
+    /**
+     * 「キーワード」「ページ数」「ページあたりの表示件数」の情報から本を検索し、jsonを返すAPI
+     * 楽天BOOKSAPIを利用。詳しくはgetBooks()参照
+     *
+     * @param Request $request
+     * @return string (json)
+     */
+    public function index(Request $request): string
     {
         $keyword = $request->input('keyword') ?? '';
         $page    = $request->input('page') ?? 1;
@@ -19,12 +25,27 @@ class BookController extends Controller
         return $this->getBooks($keyword, $page, $hits);
     }
 
-    public function showDetails($isbn)
+    /**
+     * 1冊の本の情報をISBNコードから特定してjsonで返すAPI
+     * 楽天BOOKSAPIを利用。詳細はgetBookDetails()を参照
+     *
+     * @param int $isbn (route parameter)
+     * @return string (json)
+     */
+    public function showDetails(int $isbn): string
     {
         return $this->getBookDetails($isbn);
     }
 
-    private function getBooks($keyword, $page, $hits)
+    /**
+     * 楽天BOOKSAPIを叩いてキーワード検索するメソッド
+     *
+     * @param string $keyword
+     * @param int $page
+     * @param int hits
+     * @return string (json)
+     */
+    private function getBooks(string $keyword, int $page, int $hits): string
     {
         $applicationId = config('rakutenApi.APPLICATION_ID');
         $url = self::RAKUTEN_API_URL.'?applicationId='.$applicationId.'&keyword='.$keyword.'&hits='.$hits.'&page='.$page;
@@ -43,19 +64,25 @@ class BookController extends Controller
                 ];
             }, $data->Items);
 
-            return [
+            return json_encode([
                 'status' => '200',
                 'books'  => $books,
-            ];
+            ]);
         } else {
-            return [
+            return json_encode([
                 'status' => '400',
                 'books'  => [],
-            ];
+            ]);
         }
     }
 
-    private function getBookDetails($isbn)
+    /**
+     * 楽天BOOKSAPIを叩いてISBNコードから1冊の本の詳細情報を取得するメソッド
+     *
+     * @param $isbn
+     * @return string (json)
+     */
+    private function getBookDetails(int $isbn): string
     {
         $applicationId = config('rakutenApi.APPLICATION_ID');
         $url = self::RAKUTEN_API_URL.'?applicationId='.$applicationId.'&isbnjan='.$isbn;
@@ -73,15 +100,15 @@ class BookController extends Controller
                 'image_url' => $item->largeImageUrl,
             ];
 
-            return [
+            return json_encode([
                 'status' => '200',
                 'book'  => $book,
-            ];
+            ]);
         } else {
-            return [
+            return json_encode([
                 'status' => '400',
                 'book'  => [],
-            ];
+            ]);
         }
     }
 }
